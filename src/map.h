@@ -26,3 +26,11 @@ void map_clear(void);
  */
 void map_init_snake(int size);
 
+/**
+ * @brief Modify the state of a cell
+ * @param row        The row index of the cell to modify
+ * @param column     The column index of the cell to modify
+ * @param new_state  The state to apply to the given cell
+ */
+void map_set_cell(int row, int column, cell_t new_state);
+
