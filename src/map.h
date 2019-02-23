@@ -34,3 +34,5 @@ void map_init_snake(int size);
  */
 void map_set_cell(int row, int column, cell_t new_state);
 
+/** @brief Render the game map to the console */
+void map_render(void);

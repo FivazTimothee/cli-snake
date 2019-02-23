@@ -33,3 +33,20 @@ void map_set_cell(int row, int column, cell_t new_state) {
   game_map[row][column] = new_state;
 }
 
+void map_render(void) {
+  for (int col = 0; col < MAP_SIZE_H + 2; col++) {
+    printf("#");
+  }
+  printf("\r\n");
+  for (int row = 0; row < MAP_SIZE_V; row++) {
+    printf("#");
+    for (int col = 0; col < MAP_SIZE_H; col++) {
+      printf("%c", cell_skins[game_map[row][col]]);
+    }
+    printf("#\r\n");
+  }
+  for (int col = 0; col < MAP_SIZE_H + 2; col++) {
+    printf("#");
+  }
+  printf("\r\n");
+}
