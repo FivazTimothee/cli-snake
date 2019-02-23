@@ -20,3 +20,9 @@ typedef enum {
 /** @brief Clear the game map, i.e. empty all its cells */
 void map_clear(void);
 
+/**
+ * @brief Initialize the snake in the middle of the screen
+ * @param row        The size of the snake (number of cells)
+ */
+void map_init_snake(int size);
+
