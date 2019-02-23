@@ -21,3 +21,11 @@ void map_clear(void) {
   }
 }
 
+void map_init_snake(int size) {
+  map_set_cell(MAP_SIZE_V / 2, MAP_SIZE_H / 2, CELL_SNAKE_HEAD);
+
+  for (int i = 1; i < size; i++) {
+    map_set_cell(MAP_SIZE_V / 2, (MAP_SIZE_H / 2) - i, CELL_SNAKE_BODY);
+  }
+}
+
