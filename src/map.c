@@ -29,3 +29,7 @@ void map_init_snake(int size) {
   }
 }
 
+void map_set_cell(int row, int column, cell_t new_state) {
+  game_map[row][column] = new_state;
+}
+
