@@ -4,6 +4,7 @@ VPATH += ../src
 OUTDIR := out
 
 SRC_FILES += main.c
+SRC_FILES += map.c
 
 OBJS := $(addprefix $(OUTDIR)/,$(SRC_FILES:.c=.o))
 DEPS := $(addprefix $(OUTDIR)/,$(SRC_FILES:.c=.d))
