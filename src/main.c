@@ -16,7 +16,6 @@ int main(void) {
   printf("Hello, world!\r\n");
 
   map_clear();
-  map_init_snake(8);
   map_render();
 
   return EXIT_SUCCESS;
