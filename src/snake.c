@@ -128,3 +128,13 @@ snake_part_t* snake_move_right(snake_part_t* snake_head) {
   return move_to(snake_head, new_row, new_column);
 }
 
+void snake_destroy(snake_part_t* snake_head) {
+  // Remove the tail until the head is all alone
+  while (snake_head->prev_part) {
+    remove_tail(snake_head);
+  }
+
+  // Remove the head. It's useless without a body anyway
+  map_set_cell(snake_head->row_index, snake_head->column_index, CELL_EMPTY);
+  free(snake_head);
+}

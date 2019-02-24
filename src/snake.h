@@ -64,3 +64,9 @@ snake_part_t* snake_move_left(snake_part_t* snake_head);
  */
 snake_part_t* snake_move_right(snake_part_t* snake_head);
 
+/**
+ * @brief Destroy a snake, i.e. free its memory and empty its cells on the map
+ *
+ * param snake_head A pointer on the head of the snake to destroy
+ */
+void snake_destroy(snake_part_t* snake_head);
