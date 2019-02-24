@@ -1,14 +1,17 @@
 APP_NAME := snake
 
 VPATH += ../src
+VPATH += ../external/tinycthread/source
 OUTDIR := out
 
 SRC_FILES += main.c
 SRC_FILES += map.c
 SRC_FILES += snake.c
+SRC_FILES += tinycthread.c
 
 OBJS := $(addprefix $(OUTDIR)/,$(SRC_FILES:.c=.o))
 DEPS := $(addprefix $(OUTDIR)/,$(SRC_FILES:.c=.d))
+INC := $(addprefix -I,$(VPATH))
 
 # OS specific part
 ifeq ($(OS),Windows_NT)
@@ -35,7 +38,7 @@ $(APP_NAME): $(OBJS)
 
 $(OUTDIR)/%.o:%.c | $(OUTDIR)
 	@echo Building $< [triggered by changes in $?]
-	gcc -c -MMD -g $< -o $@
+	gcc -c -MMD -g $(INC) $< -o $@
 
 $(OUTDIR):
 	@echo Creating folder $@
