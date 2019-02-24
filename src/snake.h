@@ -28,3 +28,39 @@ snake_part_t* snake_create(unsigned int size, unsigned int head_row, unsigned in
  */
 void snake_place_on_map(snake_part_t* snake_head);
 
+/**
+ * @brief Move a snake one cell up
+ *
+ * @param snake_head A pointer on the head of the snake to move
+ *
+ * @return A pointer on the new head
+ */
+snake_part_t* snake_move_up(snake_part_t* snake_head);
+
+/**
+ * @brief Move a snake one cell down
+ *
+ * @param snake_head A pointer on the head of the snake to move
+ *
+ * @return A pointer on the new head
+ */
+snake_part_t* snake_move_down(snake_part_t* snake_head);
+
+/**
+ * @brief Move a snake one cell left
+ *
+ * @param snake_head A pointer on the head of the snake to move
+ *
+ * @return A pointer on the new head
+ */
+snake_part_t* snake_move_left(snake_part_t* snake_head);
+
+/**
+ * @brief Move a snake one cell right
+ *
+ * @param snake_head A pointer on the head of the snake to move
+ *
+ * @return A pointer on the new head
+ */
+snake_part_t* snake_move_right(snake_part_t* snake_head);
+
