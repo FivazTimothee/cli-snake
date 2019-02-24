@@ -8,23 +8,20 @@
 /** @brief Number of horizontal cells in the map */
 #define MAP_SIZE_H 40
 
+#define COLUMN_INDEX_LEFT(column_index) ((column_index > 0) ? (column_index - 1) : (MAP_SIZE_H - 1))
+
+#define COLUMN_INDEX_RIGHT(column_index) \
+  ((column_index < (MAP_SIZE_H - 1)) ? (column_index + 1) : 0)
+
+#define ROW_INDEX_UP(row_index) ((row_index > 0) ? (row_index - 1) : (MAP_SIZE_V - 1))
+
+#define ROW_INDEX_DOWN(row_index) ((row_index < (MAP_SIZE_V - 1)) ? (row_index + 1) : 0)
+
 /** @brief Possible states for a cell */
-typedef enum {
-  CELL_EMPTY,
-  CELL_FRUIT,
-  CELL_SNAKE_HEAD,
-  CELL_SNAKE_BODY,
-  CELL_TYPE_COUNT
-} cell_t;
+typedef enum { CELL_EMPTY, CELL_FRUIT, CELL_SNAKE_HEAD, CELL_SNAKE_BODY, CELL_TYPE_COUNT } cell_t;
 
 /** @brief Clear the game map, i.e. empty all its cells */
 void map_clear(void);
-
-/**
- * @brief Initialize the snake in the middle of the screen
- * @param row        The size of the snake (number of cells)
- */
-void map_init_snake(int size);
 
 /**
  * @brief Modify the state of a cell
