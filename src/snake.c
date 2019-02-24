@@ -41,3 +41,19 @@ snake_part_t* snake_create(unsigned int size, unsigned int head_row, unsigned in
   return head;
 }
 
+void snake_place_on_map(snake_part_t* snake_head) {
+  if (snake_head) {
+    snake_part_t* snake_part;
+
+    // Placing head
+    map_set_cell(snake_head->row_index, snake_head->column_index, CELL_SNAKE_HEAD);
+
+    // Placing body
+    snake_part = snake_head->prev_part;
+    while (snake_part->prev_part) {
+      map_set_cell(snake_part->row_index, snake_part->column_index, CELL_SNAKE_BODY);
+      snake_part = snake_part->prev_part;
+    }
+  }
+}
+
