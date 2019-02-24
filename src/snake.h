@@ -21,3 +21,10 @@ typedef struct snake_part {
  */
 snake_part_t* snake_create(unsigned int size, unsigned int head_row, unsigned int head_col);
 
+/**
+ * @brief Place the snake on the game map, i.e. set the map cells state concerned by the snake
+ *
+ * @param snake_head A pointer on the head of the snake to place on the map
+ */
+void snake_place_on_map(snake_part_t* snake_head);
+
