@@ -8,6 +8,7 @@ SRC_FILES += main.c
 SRC_FILES += map.c
 SRC_FILES += snake.c
 SRC_FILES += tinycthread.c
+SRC_FILES += game.c
 
 OBJS := $(addprefix $(OUTDIR)/,$(SRC_FILES:.c=.o))
 DEPS := $(addprefix $(OUTDIR)/,$(SRC_FILES:.c=.d))
