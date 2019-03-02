@@ -15,7 +15,13 @@
 #endif
 
 /** @brief Frequency at which each move is performed, when beginning a game */
-#define GAME_START_FREQUENCY_HZ 2
+#define GAME_START_FREQUENCY_HZ 2.0f
+
+/** @brief Increment value of the game frequency */
+#define GAME_FREQUENCY_INCREMENT_HZ 0.2f
+
+/** @brief Maximum value of the game frequency */
+#define GAME_FREQUENCY_MAX_HZ 10.0f
 
 /** @brief Enumerate of all possible direction for the snake */
 typedef enum { MV_UP, MV_DOWN, MV_RIGHT, MV_LEFT } move_direction_t;
@@ -25,6 +31,9 @@ int playing = 1;
 
 /** @brief Shared variable used to store the current snake direction */
 move_direction_t snake_direction = MV_RIGHT;
+
+// Create the game time period
+float game_frequency_hz = GAME_START_FREQUENCY_HZ;
 
 /**
  * @brief Function to wait a certain amount of milliseconds
@@ -37,6 +46,9 @@ static void millisleep(unsigned int ms);
 
 static void fruit_callback(void) {
   map_place_fruit();  // Add a new fruit so the snake doesn't starve
+  if (game_frequency_hz < GAME_FREQUENCY_MAX_HZ) {
+    game_frequency_hz += GAME_FREQUENCY_INCREMENT_HZ;
+  }
 }
 
 /**
@@ -107,7 +119,7 @@ void game_loop(void) {
 
     map_render();
 
-    millisleep(1000 / GAME_START_FREQUENCY_HZ);
+    millisleep(1000.0f / game_frequency_hz);
   }
 
   // Destroy the snake since game is over
