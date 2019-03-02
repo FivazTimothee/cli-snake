@@ -77,8 +77,9 @@ void game_loop(void) {
 
   // Creatie the snake and place it in the middle
   snake_part_t* snake_head = snake_create(10, MAP_SIZE_V / 2, MAP_SIZE_H / 2);
-  map_clear();
+  map_init();
   snake_place_on_map(snake_head);
+  map_place_fruit();
   map_render();
 
   // Game loop: manage directions and render the map periodically

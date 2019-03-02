@@ -20,8 +20,8 @@
 /** @brief Possible states for a cell */
 typedef enum { CELL_EMPTY, CELL_FRUIT, CELL_SNAKE_HEAD, CELL_SNAKE_BODY, CELL_TYPE_COUNT } cell_t;
 
-/** @brief Clear the game map, i.e. empty all its cells */
-void map_clear(void);
+/** @brief Init the game map */
+void map_init(void);
 
 /**
  * @brief Modify the state of a cell
@@ -40,6 +40,9 @@ void map_set_cell(int row, int column, cell_t new_state);
  * @return The state of a given cell
  */
 cell_t map_get_cell(int row, int column);
+
+/** @brief Place a fruit at a random empty location on the map */
+void map_place_fruit(void);
 
 /** @brief Render the game map to the console */
 void map_render(void);

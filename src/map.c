@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "map.h"
 
@@ -13,13 +14,15 @@ char cell_skins[CELL_TYPE_COUNT] = {[CELL_EMPTY] = ' ',
 /** @brief Game map where every cell is memorized */
 static cell_t game_map[MAP_SIZE_V][MAP_SIZE_H];
 
-void map_clear(void) {
+void map_init(void) {
   // Initialize all the cells as empty
   for (int row = 0; row < MAP_SIZE_V; row++) {
     for (int col = 0; col < MAP_SIZE_H; col++) {
       game_map[row][col] = CELL_EMPTY;
     }
   }
+
+  srand(time(NULL));  // Initialize pseudo-random generator
 }
 
 void map_set_cell(int row, int column, cell_t new_state) {
@@ -31,6 +34,18 @@ cell_t map_get_cell(int row, int column) {
   cell = (row >= MAP_SIZE_V) ? CELL_EMPTY
                              : (column >= MAP_SIZE_H) ? CELL_EMPTY : game_map[row][column];
   return cell;
+}
+
+void map_place_fruit(void) {
+  int x = rand() % MAP_SIZE_V;
+  int y = rand() % MAP_SIZE_H;
+
+  while (game_map[x][y] != CELL_EMPTY) {
+    x = rand() % MAP_SIZE_V;
+    y = rand() % MAP_SIZE_H;
+  }
+
+  game_map[x][y] = CELL_FRUIT;
 }
 
 void map_render(void) {
