@@ -31,5 +31,15 @@ void map_clear(void);
  */
 void map_set_cell(int row, int column, cell_t new_state);
 
+/**
+ * @brief Get the state of a given cell
+ *
+ * @param row        The row index of the cell to modify
+ * @param column     The column index of the cell to modify
+ *
+ * @return The state of a given cell
+ */
+cell_t map_get_cell(int row, int column);
+
 /** @brief Render the game map to the console */
 void map_render(void);

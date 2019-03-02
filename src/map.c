@@ -26,6 +26,13 @@ void map_set_cell(int row, int column, cell_t new_state) {
   game_map[row][column] = new_state;
 }
 
+cell_t map_get_cell(int row, int column) {
+  cell_t cell;
+  cell = (row >= MAP_SIZE_V) ? CELL_EMPTY
+                             : (column >= MAP_SIZE_H) ? CELL_EMPTY : game_map[row][column];
+  return cell;
+}
+
 void map_render(void) {
   static char map_str_array[MAP_SIZE_V][MAP_SIZE_H + 1];
   static char hash_line_str[MAP_SIZE_H + 3];
