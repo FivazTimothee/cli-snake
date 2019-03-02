@@ -10,16 +10,22 @@ typedef struct snake_part {
   void* next_part;
 } snake_part_t;
 
+typedef void (*fruit_eaten_callback_t)(void);
+
 /**
  * @brief Create a new snake at a given position and with a given size
  *
  * @param size        The number of parts composing the snake
  * @param head_row    The row at which the head will be placed
  * @param head_column The column at which the head will be placed
+ * @param callback    The function to call when the snake eats a fruit
  *
  * @return A pointer on the created snake's head
  */
-snake_part_t* snake_create(unsigned int size, unsigned int head_row, unsigned int head_col);
+snake_part_t* snake_create(unsigned int size,
+                           unsigned int head_row,
+                           unsigned int head_col,
+                           fruit_eaten_callback_t callback);
 
 /**
  * @brief Place the snake on the game map, i.e. set the map cells state concerned by the snake

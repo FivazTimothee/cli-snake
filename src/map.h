@@ -18,7 +18,14 @@
 #define ROW_INDEX_DOWN(row_index) ((row_index < (MAP_SIZE_V - 1)) ? (row_index + 1) : 0)
 
 /** @brief Possible states for a cell */
-typedef enum { CELL_EMPTY, CELL_FRUIT, CELL_SNAKE_HEAD, CELL_SNAKE_BODY, CELL_TYPE_COUNT } cell_t;
+typedef enum {
+  CELL_EMPTY,
+  CELL_FRUIT,
+  CELL_SNAKE_HEAD,
+  CELL_SNAKE_BODY,
+  CELL_SNAKE_BODY_FULL,
+  CELL_TYPE_COUNT
+} cell_t;
 
 /** @brief Init the game map */
 void map_init(void);

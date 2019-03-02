@@ -9,7 +9,8 @@
 char cell_skins[CELL_TYPE_COUNT] = {[CELL_EMPTY] = ' ',
                                     [CELL_FRUIT] = '@',
                                     [CELL_SNAKE_HEAD] = 'O',
-                                    [CELL_SNAKE_BODY] = '*'};
+                                    [CELL_SNAKE_BODY] = '*',
+                                    [CELL_SNAKE_BODY_FULL] = '+'};
 
 /** @brief Game map where every cell is memorized */
 static cell_t game_map[MAP_SIZE_V][MAP_SIZE_H];

@@ -1,8 +1,12 @@
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
 
 #include "map.h"
 #include "snake.h"
+
+static bool has_eaten = false;
+static fruit_eaten_callback_t current_callback = NULL;
 
 /**
  * @brief Helper to create/allocate a new snake part and make sure it's empty
@@ -18,9 +22,12 @@ static snake_part_t* new_empty_part(void) {
 /**
  * @brief Helper to remove the tail of a snake, i.e. free its memory and empty its cell on the map
  *
+ * @param snake_head    A pointer on the head of the snake whose tail to remove
+ * @param except_fruit  If true, the tail is not removed if its value is CELL_SNAKE_BODY_FULL
+ *
  * @return A pointer on the snake head (or any part of the snake, actually)
  */
-static void remove_tail(snake_part_t* snake_head) {
+static void remove_tail(snake_part_t* snake_head, bool except_fruit) {
   if (snake_head) {
     snake_part_t* current_part = snake_head;
 
@@ -29,11 +36,17 @@ static void remove_tail(snake_part_t* snake_head) {
       current_part = current_part->prev_part;
     }
 
-    // Empty its cell, set new tail and free the memory
-    snake_part_t* new_tail = current_part->next_part;
-    map_set_cell(current_part->row_index, current_part->column_index, CELL_EMPTY);
-    new_tail->prev_part = NULL;
-    free(current_part);
+    if ((except_fruit && map_get_cell(current_part->row_index, current_part->column_index) ==
+                             CELL_SNAKE_BODY_FULL)) {
+      // The snake has eaten ! Let it grow a bit
+      map_set_cell(current_part->row_index, current_part->column_index, CELL_SNAKE_BODY);
+    } else {
+      // Empty its cell, set new tail and free the memory
+      snake_part_t* new_tail = current_part->next_part;
+      map_set_cell(current_part->row_index, current_part->column_index, CELL_EMPTY);
+      new_tail->prev_part = NULL;
+      free(current_part);
+    }
   }
 }
 
@@ -47,6 +60,9 @@ static void remove_tail(snake_part_t* snake_head) {
  * @return A pointer on the snake new head
  */
 static snake_part_t* move_to(snake_part_t* snake_head, int row, int column) {
+  // Memorize state of new cell to check for CELL_FRUIT
+  cell_t new_cell_state = map_get_cell(row, column);
+
   // Create new head
   snake_part_t* new_head = new_empty_part();
   snake_head->next_part = new_head;
@@ -56,16 +72,33 @@ static snake_part_t* move_to(snake_part_t* snake_head, int row, int column) {
   map_set_cell(new_head->row_index, new_head->column_index, CELL_SNAKE_HEAD);
 
   // Change previous head to body
-  map_set_cell(snake_head->row_index, snake_head->column_index, CELL_SNAKE_BODY);
+  if (has_eaten) {
+    map_set_cell(snake_head->row_index, snake_head->column_index, CELL_SNAKE_BODY_FULL);
+  } else {
+    map_set_cell(snake_head->row_index, snake_head->column_index, CELL_SNAKE_BODY);
+  }
 
-  remove_tail(snake_head);
+  if (new_cell_state == CELL_FRUIT) {
+    has_eaten = true;
+    if (current_callback) {
+      current_callback();
+    }
+  } else {
+    has_eaten = false;
+  }
+
+  remove_tail(snake_head, true);
   return new_head;
 }
 
-snake_part_t* snake_create(unsigned int size, unsigned int head_row, unsigned int head_col) {
+snake_part_t* snake_create(unsigned int size,
+                           unsigned int head_row,
+                           unsigned int head_col,
+                           fruit_eaten_callback_t callback) {
   snake_part_t* head = new_empty_part();
   head->row_index = head_row;
   head->column_index = head_col;
+  current_callback = callback;
 
   snake_part_t* current_part = head;
 
@@ -131,7 +164,7 @@ snake_part_t* snake_move_right(snake_part_t* snake_head) {
 void snake_destroy(snake_part_t* snake_head) {
   // Remove the tail until the head is all alone
   while (snake_head->prev_part) {
-    remove_tail(snake_head);
+    remove_tail(snake_head, false);
   }
 
   // Remove the head. It's useless without a body anyway
