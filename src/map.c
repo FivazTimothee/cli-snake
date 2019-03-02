@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "map.h"
 
@@ -26,20 +27,23 @@ void map_set_cell(int row, int column, cell_t new_state) {
 }
 
 void map_render(void) {
-  printf("\e[1;1H\e[2J");
-  for (int col = 0; col < MAP_SIZE_H + 2; col++) {
-    printf("#");
-  }
-  printf("\r\n");
+  static char map_str_array[MAP_SIZE_V][MAP_SIZE_H + 1];
+  static char hash_line_str[MAP_SIZE_H + 3];
+
+  memset(hash_line_str, '#', MAP_SIZE_H + 2);
+  hash_line_str[MAP_SIZE_H + 2] = '\0';
+
   for (int row = 0; row < MAP_SIZE_V; row++) {
-    printf("#");
     for (int col = 0; col < MAP_SIZE_H; col++) {
-      printf("%c", cell_skins[game_map[row][col]]);
+      map_str_array[row][col] = cell_skins[game_map[row][col]];
     }
-    printf("#\r\n");
+    map_str_array[row][MAP_SIZE_H] = '\0';
   }
-  for (int col = 0; col < MAP_SIZE_H + 2; col++) {
-    printf("#");
+
+  printf("\e[1;1H\e[2J");           // Clear console
+  printf("%s\r\n", hash_line_str);  // Print hash line
+  for (int row = 0; row < MAP_SIZE_V; row++) {
+    printf("#%s#\r\n", map_str_array[row]);  // Print one row
   }
-  printf("\r\n");
+  printf("%s\r\n", hash_line_str);  // Print hash line
 }
