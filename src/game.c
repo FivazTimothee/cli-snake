@@ -35,6 +35,10 @@ move_direction_t snake_direction = MV_RIGHT;
  */
 static void millisleep(unsigned int ms);
 
+static void fruit_callback(void) {
+  map_place_fruit();  // Add a new fruit so the snake doesn't starve
+}
+
 /**
  * @brief Thread used to acquire user keyboard input continuously
  *
@@ -76,7 +80,7 @@ void game_loop(void) {
   thrd_create(&thrd_input_handle, input_thread, 0);
 
   // Creatie the snake and place it in the middle
-  snake_part_t* snake_head = snake_create(10, MAP_SIZE_V / 2, MAP_SIZE_H / 2);
+  snake_part_t* snake_head = snake_create(10, MAP_SIZE_V / 2, MAP_SIZE_H / 2, fruit_callback);
   map_init();
   snake_place_on_map(snake_head);
   map_place_fruit();
