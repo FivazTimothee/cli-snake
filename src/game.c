@@ -66,7 +66,7 @@ static void collision_callback(void) {
  * @return unused
  */
 int input_thread(void* aArg) {
-  while (1) {
+  while (playing) {
     int c = getch();
     if (c != EOF) {
       switch (c) {
