@@ -54,6 +54,10 @@ static void fruit_callback(void) {
   }
 }
 
+static void collision_callback(void) {
+  playing = 0;
+}
+
 /**
  * @brief Thread used to acquire user keyboard input continuously
  *
@@ -99,7 +103,8 @@ void game_loop(void) {
   thrd_create(&thrd_input_handle, input_thread, 0);
 
   // Creatie the snake and place it in the middle
-  snake_part_t* snake_head = snake_create(10, MAP_SIZE_V / 2, MAP_SIZE_H / 2, fruit_callback);
+  snake_part_t* snake_head =
+      snake_create(10, MAP_SIZE_V / 2, MAP_SIZE_H / 2, fruit_callback, collision_callback);
   map_init();
   snake_place_on_map(snake_head);
   map_place_fruit();
