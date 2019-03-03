@@ -15,13 +15,13 @@
 #endif
 
 /** @brief Frequency at which each move is performed, when beginning a game */
-#define GAME_START_FREQUENCY_HZ 2.0f
+#define GAME_START_FREQUENCY_HZ 4.0f
 
 /** @brief Increment value of the game frequency */
-#define GAME_FREQUENCY_INCREMENT_HZ 0.2f
+#define GAME_FREQUENCY_INCREMENT_HZ 0.3f
 
 /** @brief Maximum value of the game frequency */
-#define GAME_FREQUENCY_MAX_HZ 10.0f
+#define GAME_FREQUENCY_MAX_HZ 15.0f
 
 /** @brief Enumerate of all possible direction for the snake */
 typedef enum { MV_UP, MV_DOWN, MV_RIGHT, MV_LEFT } move_direction_t;
@@ -29,8 +29,11 @@ typedef enum { MV_UP, MV_DOWN, MV_RIGHT, MV_LEFT } move_direction_t;
 /** @brief Shared variable used to stop the game upon a given key press */
 int playing = 1;
 
+/** @brief Shared variable used to store the snake direction of the next move */
+move_direction_t next_snake_direction = MV_RIGHT;
+
 /** @brief Shared variable used to store the current snake direction */
-move_direction_t snake_direction = MV_RIGHT;
+move_direction_t current_snake_direction = MV_RIGHT;
 
 // Create the game time period
 float game_frequency_hz = GAME_START_FREQUENCY_HZ;
@@ -67,16 +70,20 @@ int input_thread(void* aArg) {
           playing = 0;
           break;
         case 'w':
-          snake_direction = MV_UP;
+          if (current_snake_direction != MV_DOWN)
+            next_snake_direction = MV_UP;
           break;
         case 's':
-          snake_direction = MV_DOWN;
+          if (current_snake_direction != MV_UP)
+            next_snake_direction = MV_DOWN;
           break;
         case 'a':
-          snake_direction = MV_LEFT;
+          if (current_snake_direction != MV_RIGHT)
+            next_snake_direction = MV_LEFT;
           break;
         case 'd':
-          snake_direction = MV_RIGHT;
+          if (current_snake_direction != MV_LEFT)
+            next_snake_direction = MV_RIGHT;
           break;
         default:
           break;
@@ -100,7 +107,7 @@ void game_loop(void) {
 
   // Game loop: manage directions and render the map periodically
   while (playing) {
-    switch (snake_direction) {
+    switch (next_snake_direction) {
       case MV_UP:
         snake_head = snake_move_up(snake_head);
         break;
@@ -116,6 +123,8 @@ void game_loop(void) {
       default:
         break;
     }
+
+    current_snake_direction = next_snake_direction;
 
     map_render();
 
