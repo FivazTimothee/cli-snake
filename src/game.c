@@ -38,6 +38,9 @@ move_direction_t current_snake_direction = MV_RIGHT;
 // Create the game time period
 float game_frequency_hz = GAME_START_FREQUENCY_HZ;
 
+// Score of the current game
+unsigned int score = 0;
+
 /**
  * @brief Function to wait a certain amount of milliseconds
  *
@@ -48,6 +51,7 @@ float game_frequency_hz = GAME_START_FREQUENCY_HZ;
 static void millisleep(unsigned int ms);
 
 static void fruit_callback(void) {
+  score++;
   map_place_fruit();  // Add a new fruit so the snake doesn't starve
   if (game_frequency_hz < GAME_FREQUENCY_MAX_HZ) {
     game_frequency_hz += GAME_FREQUENCY_INCREMENT_HZ;
@@ -132,12 +136,15 @@ void game_loop(void) {
     current_snake_direction = next_snake_direction;
 
     map_render();
+    printf("Score: %d\r\n", score);
 
     millisleep(1000.0f / game_frequency_hz);
   }
 
   // Destroy the snake since game is over
   snake_destroy(snake_head);
+
+  printf("\r\nGame lost !\r\n");
 }
 
 static void millisleep(unsigned int ms) {
