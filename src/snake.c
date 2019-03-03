@@ -6,7 +6,8 @@
 #include "snake.h"
 
 static bool has_eaten = false;
-static fruit_eaten_callback_t current_callback = NULL;
+static fruit_eaten_callback_t current_fruit_callback = NULL;
+static snake_collision_callback_t current_collision_callback = NULL;
 
 /**
  * @brief Helper to create/allocate a new snake part and make sure it's empty
@@ -63,6 +64,13 @@ static snake_part_t* move_to(snake_part_t* snake_head, int row, int column) {
   // Memorize state of new cell to check for CELL_FRUIT
   cell_t new_cell_state = map_get_cell(row, column);
 
+  if ((new_cell_state != CELL_EMPTY) && (new_cell_state != CELL_FRUIT)) {
+    if (current_collision_callback) {
+      current_collision_callback();
+    }
+    return snake_head;
+  }
+
   // Create new head
   snake_part_t* new_head = new_empty_part();
   snake_head->next_part = new_head;
@@ -80,8 +88,8 @@ static snake_part_t* move_to(snake_part_t* snake_head, int row, int column) {
 
   if (new_cell_state == CELL_FRUIT) {
     has_eaten = true;
-    if (current_callback) {
-      current_callback();
+    if (current_fruit_callback) {
+      current_fruit_callback();
     }
   } else {
     has_eaten = false;
@@ -94,11 +102,13 @@ static snake_part_t* move_to(snake_part_t* snake_head, int row, int column) {
 snake_part_t* snake_create(unsigned int size,
                            unsigned int head_row,
                            unsigned int head_col,
-                           fruit_eaten_callback_t callback) {
+                           fruit_eaten_callback_t fruit_callback,
+                           snake_collision_callback_t collision_callback) {
   snake_part_t* head = new_empty_part();
   head->row_index = head_row;
   head->column_index = head_col;
-  current_callback = callback;
+  current_fruit_callback = fruit_callback;
+  current_collision_callback = collision_callback;
 
   snake_part_t* current_part = head;
 
